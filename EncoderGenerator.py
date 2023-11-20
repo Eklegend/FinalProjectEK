@@ -1,4 +1,4 @@
-# HERE WE GENERATES THE CODES AND FACE-RECOGNITION
+# HERE WE GENERATE THE CODES AND FACE-RECOGNITION
 
 import cv2
 import face_recognition
@@ -37,6 +37,17 @@ def findEncodings(listOfImages):
 print("Encoding Started")
 # call the function above function of the known faces
 encodeListKnown = findEncodings(imgList)  # this will generate the image list and saves here in findEncodings
-print (encodeListKnown)
+
+# to tell which id belongs to which encoding
+encodeListKnownWithIds = [encodeListKnown,studentIds]
+
+print(encodeListKnown)
+# we get the encoding in array format, we need to save it in a pickle file so we can import it when we are using webcam
 print("Encoding Complete")
-# once we get the endoing in array format, we need to save it in a pickle file so we can import it.
+
+file = open("EncodeFile.p",'wb') # we create a file called EncodeFile.p in write in binary mode (wb)
+pickle.dump(encodeListKnownWithIds,file) # we send the file to pickle
+file.close()
+print("File saved")
+
+
