@@ -4,6 +4,20 @@ import cv2
 import face_recognition
 import pickle  # this library is a way to store and bring back Python Objects
 import os
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+from firebase_admin import storage
+
+# Here we will link the storage to process our images
+
+cred = credentials.Certificate("serviceAccountKey.json")
+
+# link the realtime database url in json format
+firebase_admin.initialize_app(cred, {
+    'databaseURL': "https://ekfacialrecognition-default-rtdb.europe-west1.firebasedatabase.app/",
+    'storageBucket': "ekfacialrecognition.appspot.com"
+})
 
 # import student images
 folderPath = 'Images'
@@ -19,6 +33,12 @@ for path in pathList:
     # print(path)
     # print(os.path.splitext(path)[0])  # This splits the png from the image name, we write [0] because
     # from ('121212', '.png') , we want the 121212 which value is [0]
+
+    # here we are linking the images with our database storage
+    fileName=f'{folderPath}/{path}'
+    bucket = storage.bucket()
+    blob = bucket.blob(fileName)
+    blob.upload_from_filename(fileName)
 
 print(studentIds)  # will output ['121212', '131313', '141414']
 
@@ -39,15 +59,13 @@ print("Encoding Started")
 encodeListKnown = findEncodings(imgList)  # this will generate the image list and saves here in findEncodings
 
 # to tell which id belongs to which encoding
-encodeListKnownWithIds = [encodeListKnown,studentIds]
+encodeListKnownWithIds = [encodeListKnown, studentIds]
 
 print(encodeListKnown)
 # we get the encoding in array format, we need to save it in a pickle file so we can import it when we are using webcam
 print("Encoding Complete")
 
-file = open("EncodeFile.p",'wb') # we create a file called EncodeFile.p in write in binary mode (wb)
-pickle.dump(encodeListKnownWithIds,file) # we send the file to pickle
+file = open("EncodeFile.p", 'wb')  # we create a file called EncodeFile.p in write in binary mode (wb)
+pickle.dump(encodeListKnownWithIds, file)  # we send the file to pickle
 file.close()
 print("File saved")
-
-
