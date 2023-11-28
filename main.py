@@ -58,8 +58,8 @@ while True:
 
         # If the minimum value from matchIndex matches our face, it will output Known face detected
         if matches[matchIndex]:
-            # print("Known face detected")
-            # print(studentIds[matchIndex]) # Now we will output the id of the student of the matched face
+            print("Known face detected")
+            print(studentIds[matchIndex]) # Now we will output the id of the student of the matched face
 
             y1, x2, y2, x1 = faceLocation
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
