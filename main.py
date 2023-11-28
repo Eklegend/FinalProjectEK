@@ -101,18 +101,18 @@ while True:
 
         cv2.putText(imgBackground,str(studentInfo['Total_attendance']),(868,88), # the position
                     cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
-        cv2.putText(imgBackground,str(studentInfo['Name']),(805,424), # the position
+        cv2.putText(imgBackground,str(studentInfo['Name']),(805,427), # the position
                     cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
-        cv2.putText(imgBackground,str(studentInfo['Major']),(973,547), # the position
+        cv2.putText(imgBackground,str(studentInfo['Major']),(973,548), # the position
                     cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
-        cv2.putText(imgBackground,str(id),(916,479), # the position
+        cv2.putText(imgBackground,str(id),(916,485), # the position
                     cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
-        cv2.putText(imgBackground, str(studentInfo['Standing']), (980, 655),  # the position
-                    cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1)
-        cv2.putText(imgBackground, str(studentInfo['Year']), (849, 655),  # the position
-                    cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1)
-        cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1110, 655),  # the position
-                    cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1)
+        cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+        cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+        cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
 
         counter +=1
 
