@@ -18,7 +18,7 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': "https://ekfacialrecognition-default-rtdb.europe-west1.firebasedatabase.app/",
     'storageBucket': "ekfacialrecognition.appspot.com"
 })
-
+bucket = storage.bucket()
 
 cap = cv2.VideoCapture(0)
 # here we are using default camera sizing, either 1280*720, 640*480 or 320*240 or 160*120
@@ -95,24 +95,36 @@ while True:
 
         # above we have set counter = 0. Once theres a face match, counter will chance to 1 ( only once)
         # once counter ==1, it will get the Students id and prints student info
+
         if counter ==1:
+
+            # Gets the student info (data)
             studentInfo = db.reference(f'Students/{id}').get()
             print(studentInfo)
 
+            blob = bucket.get_blob(f'Images/{id}.png')
+
+
+
+        # here we are positioning the data accordingly
         cv2.putText(imgBackground,str(studentInfo['Total_attendance']),(868,88), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
-        cv2.putText(imgBackground,str(studentInfo['Name']),(805,427), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
+                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
         cv2.putText(imgBackground,str(studentInfo['Major']),(973,548), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
+                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
         cv2.putText(imgBackground,str(id),(916,485), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,0,0),2)
+                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
         cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
         cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
         cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+
+        #centering the name
+        (w,h), _ = cv2.getTextSize(studentInfo['Name'],cv2.FONT_HERSHEY_COMPLEX,0.8,2)
+        offset = (468-w)//2
+        cv2.putText(imgBackground, str(studentInfo['Name']), (805+offset, 427),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
 
         counter +=1
 
