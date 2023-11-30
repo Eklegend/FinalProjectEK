@@ -18,10 +18,10 @@ data = {
             "Name": "Hariharan Elangovan",
             "Major": "Informatics",
             "Enrolling_Year": "2020",
-            "Total_attendance": 5,
+            "Total_attendance": 0,
             "Standing": 4.6,  # G for good
             "Year": 4,
-            "Last_attendance_time": "2023-11-28 01:58:33"
+            "Last_attendance_time": "2023-01-01 01:01:01"
 
         },
     "131313":
@@ -29,10 +29,10 @@ data = {
             "Name": "Alexandra Daddario",
             "Major": "Data Finance",
             "Enrolling_Year": "2021",
-            "Total_attendance": 5,
+            "Total_attendance": 0,
             "Standing": 5.0,  # G for good
             "Year": 5,
-            "Last_attendance_time": "2023-11-11 01:58:33"
+            "Last_attendance_time": "2023-01-01 01:01:01"
 
         },
     "141414":
@@ -43,7 +43,7 @@ data = {
             "Total_attendance": 0,
             "Standing": 3.0,  # G for good
             "Year": 1,
-            "Last_attendance_time": "2023-1-1 11:58:33"
+            "Last_attendance_time": "2023-01-01 01:01:01"
 
         }
 }
