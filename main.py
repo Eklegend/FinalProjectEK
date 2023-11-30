@@ -26,7 +26,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
-imgBackground = cv2.imread('Resources/BackgrdImage.png')
+imgBackground = cv2.imread('Resources/fullscope.png')
 
 # import the mode images into a list
 folderModePath = 'Resources/Modes'
@@ -111,7 +111,8 @@ while True:
             blob = bucket.get_blob(f'Images/{id}.png')
             array = np.frombuffer(blob.download_as_string(), np.uint8)
             imageStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
-
+            # Resize image automatically
+            imageStudent = cv2.resize(imageStudent, (362, 245))
             #Update data of attendance
 
             # This converts the date time from string to object
@@ -121,53 +122,64 @@ while True:
             secondsElapsed = (datetime.now()-datetimeObject).total_seconds()
             print(secondsElapsed)
 
-            ref = db.reference(f'Students/{id}')
-            studentInfo['Total_attendance'] +=1
-            ref.child('Total_attendance').set(studentInfo['Total_attendance'])
-            ref.child('Last_attendance_time').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
+            if secondsElapsed >30:
 
-            #Resize image automatically
-            imageStudent = cv2.resize(imageStudent, (362, 245))
+                ref = db.reference(f'Students/{id}')
+                studentInfo['Total_attendance'] +=1
+                ref.child('Total_attendance').set(studentInfo['Total_attendance'])
+                ref.child('Last_attendance_time').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        # Creates a timer that shows that the student image is already marked
+            else :
+                modeType = 3
+                counter = 0
+                imgBackground[0:0 + 720, 757:757 + 523] = imgModeList[modeType]
+                imageStudent = cv2.resize(imageStudent, (362, 245))
 
-        if 10<counter<20:
-            modeType=2
-        imgBackground[0:0 + 720, 757:757 + 523] = imgModeList[modeType]
+        if modeType != 3 : # This ensures that the below code only runs when mode type is 0,1,2
 
-        if counter<=10:
+            # Creates a timer that shows that the student image is already marked
 
-            # here we are positioning the data accordingly
-            cv2.putText(imgBackground, str(studentInfo['Total_attendance']), (868, 88),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-            cv2.putText(imgBackground, str(studentInfo['Major']), (973, 548),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-            cv2.putText(imgBackground, str(id), (916, 485),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-            cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-            cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-            cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-
-            # centering the name
-            (w, h), _ = cv2.getTextSize(studentInfo['Name'], cv2.FONT_HERSHEY_COMPLEX, 0.8, 2)
-            offset = (468 - w) // 2
-            cv2.putText(imgBackground, str(studentInfo['Name']), (805 + offset, 427),  # the position
-                        cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-
-            # Here we call the image to display
-            imgBackground[138:138 + 245, 840:840 + 362] = imageStudent
-        counter += 1
-
-        if counter>=20:
-            counter=0
-            modeType = 0
-            studentInfo=[]
-            imageStudent = []
+            if 10<counter<20:
+                modeType=2
             imgBackground[0:0 + 720, 757:757 + 523] = imgModeList[modeType]
+
+            if counter<=10:
+
+                # here we are positioning the data accordingly
+                cv2.putText(imgBackground, str(studentInfo['Total_attendance']), (868, 88),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+                cv2.putText(imgBackground, str(studentInfo['Major']), (973, 548),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+                cv2.putText(imgBackground, str(id), (916, 485),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+                cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+                cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+                cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
+
+                # centering the name
+                (w, h), _ = cv2.getTextSize(studentInfo['Name'], cv2.FONT_HERSHEY_COMPLEX, 0.8, 2)
+                offset = (468 - w) // 2
+                cv2.putText(imgBackground, str(studentInfo['Name']), (805 + offset, 427),  # the position
+                            cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+
+                # Here we call the image to display
+                imgBackground[138:138 + 245, 840:840 + 362] = imageStudent
+
+                #Resize image automatically
+                imageStudent = cv2.resize(imageStudent, (362, 245))
+
+            counter += 1
+
+            if counter>=20:
+                counter=0
+                modeType = 0
+                studentInfo=[]
+                imageStudent = []
+                imgBackground[0:0 + 720, 757:757 + 523] = imgModeList[modeType]
 
     cv2.imshow("Face Attendance", imgBackground)
     #  imgBackground[y_offset:y_offset + region_height, x_offset:x_offset + region_width] = img
