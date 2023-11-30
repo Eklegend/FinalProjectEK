@@ -46,7 +46,6 @@ encodeListKnown, studentIds = encodeListKnownWithIds
 print(studentIds)
 print("Encode Files Loaded")
 
-
 modeType = 0
 counter = 0
 id = -1
@@ -78,41 +77,45 @@ while True:
 
         # If the minimum value from matchIndex matches our face, it will output Known face detected
         if matches[matchIndex]:
-            #print("Known face detected")
+            # print("Known face detected")
 
-            #print(studentIds[matchIndex]) # Now we will output the id of the student of the matched face
+            # print(studentIds[matchIndex]) # Now we will output the id of the student of the matched face
 
             y1, x2, y2, x1 = faceLocation
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
-            bbox = 61 + x1, 137 + y1, x2 - x1, y2 - y1 # here we use the measurements of the imgBackground
+            bbox = 61 + x1, 137 + y1, x2 - x1, y2 - y1  # here we use the measurements of the imgBackground
             imgBackground = cvzone.cornerRect(imgBackground, bbox, rt=0)
 
             id = studentIds[matchIndex]
-            if counter == 0 :
-                counter =1
+            if counter == 0:
+                counter = 1
                 modeType = 1
     if counter != 0:
 
         # above we have set counter = 0. Once theres a face match, counter will chance to 1 ( only once)
         # once counter ==1, it will get the Students id and prints student info
 
-        if counter ==1:
-
+        if counter == 1:
             # Gets the student info (data)
             studentInfo = db.reference(f'Students/{id}').get()
             print(studentInfo)
 
+            # This is output the image that we need
             blob = bucket.get_blob(f'Images/{id}.png')
+            array = np.frombuffer(blob.download_as_string(), np.uint8)
+            imageStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
 
+            #Resize image automatically
+            imageStudent = cv2.resize(imageStudent, (362, 245))
 
 
         # here we are positioning the data accordingly
-        cv2.putText(imgBackground,str(studentInfo['Total_attendance']),(868,88), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
-        cv2.putText(imgBackground,str(studentInfo['Major']),(973,548), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
-        cv2.putText(imgBackground,str(id),(916,485), # the position
-                    cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,0),2)
+        cv2.putText(imgBackground, str(studentInfo['Total_attendance']), (868, 88),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+        cv2.putText(imgBackground, str(studentInfo['Major']), (973, 548),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
+        cv2.putText(imgBackground, str(id), (916, 485),  # the position
+                    cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
         cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
         cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
@@ -120,18 +123,15 @@ while True:
         cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
 
-        #centering the name
-        (w,h), _ = cv2.getTextSize(studentInfo['Name'],cv2.FONT_HERSHEY_COMPLEX,0.8,2)
-        offset = (468-w)//2
-        cv2.putText(imgBackground, str(studentInfo['Name']), (805+offset, 427),  # the position
+        # centering the name
+        (w, h), _ = cv2.getTextSize(studentInfo['Name'], cv2.FONT_HERSHEY_COMPLEX, 0.8, 2)
+        offset = (468 - w) // 2
+        cv2.putText(imgBackground, str(studentInfo['Name']), (805 + offset, 427),  # the position
                     cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
 
-        counter +=1
-
-
-
-
-
+        # Here we call the image to display
+        imgBackground[138:138 + 245, 840:840 + 362] = imageStudent
+        counter += 1
 
     cv2.imshow("Face Attendance", imgBackground)
     #  imgBackground[y_offset:y_offset + region_height, x_offset:x_offset + region_width] = img
@@ -140,8 +140,6 @@ while True:
     # imgModeList[0] = Full details, imgModeList[1] = Active, imgModeList[2] = Marked, imgModeList[3] = Already Marked
     # here we are joining Image from the Modes to the main (background)
     imgBackground[0:0 + 720, 757:757 + 523] = imgModeList[modeType]
-
-
 
     # Exit on 'q' key press
     if cv2.waitKey(1) & 0xFF == ord('q'):
