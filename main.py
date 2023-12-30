@@ -132,7 +132,7 @@ while True:
 
                 # This secondsElapsed makes the user to only get attended after the seconds written
                 # Here 82800 seconds is equal to 23 hours. Thus, User can on scan the image after 23 hours
-                if secondsElapsed > 8:
+                if secondsElapsed > 20:
 
                     ref = db.reference(f'Courses/{course_name}/{id}')
                     studentInfo['Total_attendance'] += 1
