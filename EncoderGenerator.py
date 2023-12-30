@@ -8,6 +8,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
+from course_selector import choose_course
 
 # Here we will link the storage to process our images
 
@@ -18,6 +19,8 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': "https://ekfacialrecognition-default-rtdb.europe-west1.firebasedatabase.app/",
     'storageBucket': "ekfacialrecognition.appspot.com"
 })
+course_name = choose_course()
+
 
 # import student images
 folderPath = 'Images'

@@ -9,6 +9,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
 from datetime import datetime
+from course_selector import choose_course
 
 # Here we will link the storage to process our images
 
@@ -20,6 +21,9 @@ firebase_admin.initialize_app(cred, {
     'storageBucket': "ekfacialrecognition.appspot.com"
 })
 bucket = storage.bucket()
+
+course_name = choose_course()
+ref = db.reference(f'Courses/{course_name}')
 
 cap = cv2.VideoCapture(0)
 # here we are using default camera sizing, either 1280*720, 640*480 or 320*240 or 160*120
@@ -50,6 +54,7 @@ print("Encode Files Loaded")
 modeType = 0
 counter = 0
 id = -1
+
 
 while True:
     success, img = cap.read()
@@ -107,7 +112,7 @@ while True:
 
             if counter == 1:
                 # Gets the student info (data)
-                studentInfo = db.reference(f'Students/{id}').get()
+                studentInfo = db.reference(f'Courses/{course_name}/{id}').get()
                 print(studentInfo)
 
                 # This is output the image that we need
@@ -127,9 +132,9 @@ while True:
 
                 # This secondsElapsed makes the user to only get attended after the seconds written
                 # Here 82800 seconds is equal to 23 hours. Thus, User can on scan the image after 23 hours
-                if secondsElapsed > 82800:
+                if secondsElapsed > 8:
 
-                    ref = db.reference(f'Students/{id}')
+                    ref = db.reference(f'Courses/{course_name}/{id}')
                     studentInfo['Total_attendance'] += 1
                     ref.child('Total_attendance').set(studentInfo['Total_attendance'])
                     ref.child('Last_attendance_time').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
