@@ -1,5 +1,7 @@
 import os
 import pickle
+import time
+
 import numpy as np
 import cv2
 import face_recognition
@@ -101,7 +103,7 @@ while True:
                 if counter == 0:
                     cvzone.putTextRect(imgBackground, "Loading", (265, 400))
                     cv2.imshow("Face Attendance", imgBackground)
-                    cv2.waitKey(1)
+                    cv2.waitKey(5)
                     counter = 1
                     modeType = 1
 
@@ -161,11 +163,11 @@ while True:
                                 cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
                     cv2.putText(imgBackground, str(id), (916, 485),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-                    cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 655),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-                    cv2.putText(imgBackground, str(studentInfo['Year']), (853, 655),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Year']), (853, 647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-                    cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113, 655),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113,647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
 
                     # centering the name
