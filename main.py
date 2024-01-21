@@ -107,7 +107,7 @@ while True:
 
         if counter != 0:
 
-            # above we have set counter = 0. Once theres a face match, counter will chance to 1 ( only once)q
+            # above we have set counter = 0. Once there's a face match, counter will chance to 1 ( only once)q
             # once counter ==1, it will get the Students id and prints student info
 
             if counter == 1:

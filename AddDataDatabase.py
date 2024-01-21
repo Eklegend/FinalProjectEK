@@ -131,6 +131,7 @@ ref.child('Informatics').set(data2)
 ref.child('Computer Architecture').set(data3)
 
 
+
 # This is how we unzip json data dictionary in python
 # for key, value in data.items():
 #     ref.child(key).set(value)  # we use child if we want to send data to specific directory
