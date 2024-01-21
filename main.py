@@ -163,11 +163,11 @@ while True:
                                 cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
                     cv2.putText(imgBackground, str(id), (916, 485),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 2)
-                    cv2.putText(imgBackground, str(studentInfo['Standing']), (983, 647),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Standing']), (1010, 647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-                    cv2.putText(imgBackground, str(studentInfo['Year']), (853, 647),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Year']), (866, 647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
-                    cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1113,647),  # the position
+                    cv2.putText(imgBackground, str(studentInfo['Enrolling_Year']), (1148,647),  # the position
                                 cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 0), 1)
 
                     # centering the name
