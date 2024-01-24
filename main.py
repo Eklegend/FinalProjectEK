@@ -103,7 +103,7 @@ while True:
                 if counter == 0:
                     cvzone.putTextRect(imgBackground, "Loading", (265, 400))
                     cv2.imshow("Face Attendance", imgBackground)
-                    cv2.waitKey(5)
+                    cv2.waitKey(1)
                     counter = 1
                     modeType = 1
 
@@ -134,7 +134,7 @@ while True:
 
                 # This secondsElapsed makes the user to only get attended after the seconds written
                 # Here 82800 seconds is equal to 23 hours. Thus, User can on scan the image after 23 hours
-                if secondsElapsed > 20:
+                if secondsElapsed > 6:
 
                     ref = db.reference(f'Courses/{course_name}/{id}')
                     studentInfo['Total_attendance'] += 1
